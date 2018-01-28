@@ -38,10 +38,12 @@ module Myst
 
         opts.unknown_args do |before_dash|
           if before_dash.size > 0
-            unless eval
+            if eval
+              source = before_dash.join("\n")              
+            elsif before_dash.first? == "repl"
+              Repl.start
+            else # First in `before_dash` is a file, or invalid
               source = before_dash.shift
-            else
-              source = before_dash.join("\n")
             end
           end
         end
